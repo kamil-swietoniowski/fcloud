@@ -7,13 +7,26 @@ use axum::{
 #[tokio::main]
 async fn main() {
     let app = Router::new()
-        .route("/", get(|| async { "Hello, World!" }))
+        .route("/", get(client_choose))
         .route("/list", get(list_files));
 
     // run our app with hyper, listening globally on port 3000
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
     axum::serve(listener, app).await.unwrap();
 }
+
+async fn client_choose(headers: HeaderMap) -> Result<String, StatusCode> {
+    let client = if let Some(cl) = headers.get("client-type") {
+        if cl == "r-client" {
+            return Ok("Witaj R Client".to_string());
+        } else {
+            return Ok(format!("Nie rozpoznano: {}", cl.to_str().unwrap()));
+        } 
+    } else {
+        return Ok("Witaj z przeglądarki!".to_string());
+    };
+}
+
 
 async fn list_files(headers: HeaderMap) -> Result<Json<Vec<String>>, StatusCode> {
     let path = match headers.get("path") {
@@ -25,6 +38,8 @@ async fn list_files(headers: HeaderMap) -> Result<Json<Vec<String>>, StatusCode>
         Err(_) => return Err(StatusCode::NOT_FOUND),
     }))
 }
+
+
 
 use std::fs;
 

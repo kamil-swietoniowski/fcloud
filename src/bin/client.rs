@@ -3,21 +3,28 @@ use reqwest::{Client, header};
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let url = input("Enter URL(leave blank for default): ");
-    let url = if url.is_empty() { "http://127.0.0.1:3000/list".to_string()} else {url};
+    let url = if url.is_empty() { "http://127.0.0.1:3000".to_string()} else {url};
 
     let path = input("Enter path: ");
 
-    println!("{url}");
+    let client = Client::new();
+       
+    let res = client.get("http://127.0.0.1:3000")
+        .header("client-type", "r-client")
+        .send().await.unwrap().text().await.unwrap();
+    println!("{res}");
+    
+
+
+    Ok(())
+}
+
+async fn get_list(url: String, path: String) -> Vec<String> {
     let client = Client::new();
     let files: Vec<String> = client.get(url)
         .header("path", path).send().await.unwrap().json().await.unwrap();
-    
-    
-    
-    for file in files {
-        println!("{file}")
-    }
-    Ok(())
+    files
+
 }
 
 use std::io::{self, Write};
