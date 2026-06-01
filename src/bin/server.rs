@@ -16,7 +16,10 @@ async fn main() {
 }
 
 async fn list_files(headers: HeaderMap) -> Result<Json<Vec<String>>, StatusCode> {
-    let path = headers.get("path").unwrap().to_str().unwrap();
+    let path = match headers.get("path") {
+        Some(t) => t.to_str().unwrap(),
+        None => ".",
+    };
     Ok(Json(match get_files_as_strings(path) {
         Ok(t) => t,
         Err(_) => return Err(StatusCode::NOT_FOUND),
