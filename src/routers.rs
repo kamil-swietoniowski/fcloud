@@ -26,7 +26,7 @@ pub async fn receive_file_handler(headers: HeaderMap, body: Bytes) -> StatusCode
     
     match storage::save_file(file_name, &body) {
         Ok(_) => {},
-        Err(io::ErrorKind::AlreadyExists) => return StatusCode::CONFLICT,
+       Err(io::ErrorKind::AlreadyExists) => return StatusCode::CONFLICT,
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR,
     };
 
