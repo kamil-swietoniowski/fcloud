@@ -1,15 +1,21 @@
-use axum::{Router, routing::{get, post}};
+use axum::{Router, extract::path, routing::{get, post}};
 
+#[path ="../models.rs"]
+mod models;
 #[path = "../storage.rs"]
 mod storage;
-#[path = "../handlers.rs"]
-mod handlers;
+#[path = "../routers.rs"]
+mod routers;
+#[path = "../services/auth_service.rs"]
+mod auth_service;
+#[path = "../services/file_service.rs"]
+mod file_service;
 
 #[tokio::main]
 async fn main() {
     let app = Router::new()
-        .route("/list", get(handlers::list_files_handler))
-        .route("/send", post(handlers::receive_file_handler));
+        .route("/list", get(routers::list_files_handler))
+        .route("/send", post(routers::receive_file_handler));
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
     println!("Serwer fcloud ruszył!");
