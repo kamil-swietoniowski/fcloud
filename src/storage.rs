@@ -1,9 +1,47 @@
 use std::fs;
-use std::io;
-use std::io::Write;
+use std::path::Path;
 
-pub fn database_init() {
-    todo!()
+use sqlx::SqlitePool;
+use sqlx::sqlite::SqlitePoolOptions;
+
+const DATABASE_INIT: &str = "CREATE TABLE IF NOT EXISTS users (
+    id TEXT PRIMARY KEY,
+    username TEXT UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS files (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    name TEXT NOT NULL,
+    path TEXT NOT NULL,
+    total_size INTEGER NOT NULL,
+    uploaded_size INTEGER NOT NULL,
+    chunk_size INTEGER NOT NULL,
+    file_hash TEXT NOT NULL,
+    status TEXT NOT NULL,
+    FOREIGN KEY(user_id) REFERENCES users(id)
+);";
+
+
+pub async fn database_init() -> Result<SqlitePool, sqlx::Error> {
+    let db_path = "fcloud.db";
+    fs::create_dir_all("./storage").unwrap_or_default();
+
+    if !Path::new(db_path).exists() {
+        fs::File::create(db_path).map_err(|_| {
+            sqlx::Error::WorkerCrashed
+        })?;
+    }
+
+    let pool = SqlitePoolOptions::new()
+        .max_connections(5)
+        .connect(db_path)
+        .await?;
+
+    sqlx::query(DATABASE_INIT)
+        .execute(&pool)
+        .await?;
+    Ok(pool)
 }
 
 pub fn save_user() {

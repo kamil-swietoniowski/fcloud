@@ -15,6 +15,7 @@ mod file_service;
 
 #[tokio::main]
 async fn main() {
+    let pool = storage::database_init().await;
     let app = Router::new()
         .route("/auth/register", post(routers::handle_register))
         .route("/auth/login", post(routers::handle_login))
