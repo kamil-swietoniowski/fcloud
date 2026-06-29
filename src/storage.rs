@@ -4,6 +4,8 @@ use std::path::Path;
 use sqlx::SqlitePool;
 use sqlx::sqlite::SqlitePoolOptions;
 
+use crate::errors::AppResult;
+
 const DATABASE_INIT: &str = "CREATE TABLE IF NOT EXISTS users (
     id TEXT PRIMARY KEY,
     username TEXT UNIQUE NOT NULL,
@@ -44,8 +46,15 @@ pub async fn database_init() -> Result<SqlitePool, sqlx::Error> {
     Ok(pool)
 }
 
-pub fn save_user() {
-    todo!()
+pub async fn save_user(pool: &SqlitePool, id: &str, username: &str, password_hash: &str) -> Result<(), sqlx::Error> {
+    sqlx::query("INSERT INTO users (id, username, password_hash) VALUES (?, ?, ?)")
+        .bind(id)
+        .bind(username)
+        .bind(password_hash)
+        .execute(pool)
+        .await?;
+
+    Ok(())
 }
 
 pub fn get_user_by_username() {
