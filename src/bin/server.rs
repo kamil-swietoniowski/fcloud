@@ -1,5 +1,7 @@
 use axum::{Router, routing::{delete, get, post}};
 
+#[path ="../errors.rs"]
+mod errors;
 #[path ="../models.rs"]
 mod models;
 #[path = "../storage.rs"]
