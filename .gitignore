@@ -1,2 +1,8 @@
+#some oldie
 backend/target/
+
+#workspace
+target/
+
+
 *.db
