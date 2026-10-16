@@ -39,3 +39,5 @@ pub struct Relation {
     id_1_table: Table,
     id_2_table: Table
 }
+
+
