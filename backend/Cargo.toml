@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-uuid = { version = "1.28.0", features = ["serde"] }
+uuid = { version = "1.28.0", features = ["serde", "v4", "v7", "fast-rng"] }
 chrono = { version = "0.4", features = ["serde"] }
 sqlx = { version = "0.9", default-features = false, features = [ "runtime-tokio", "macros", "sqlite", "uuid", "chrono"] }
 tokio = { version = "1", features = ["full"] }

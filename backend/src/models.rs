@@ -40,4 +40,12 @@ pub struct Relation {
     id_2_table: Table
 }
 
+impl Person {
+    pub fn new(name: Option<String>, last_name: Option<String>, phone_number: Option<String>, email_address: Option<String>, description: Option<String>) -> Self {
+        let uuid = Uuid::now_v7();
 
+        Self {
+            id: uuid, name, last_name, phone_number, email_address, description
+        }
+    }
+}
