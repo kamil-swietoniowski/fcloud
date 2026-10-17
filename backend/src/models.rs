@@ -11,24 +11,24 @@ enum Table {
 
 pub struct Person {
     id: Uuid,
-    name: String,
-    last_name: String,
-    phone_number: String,
-    email_address: String,
-    description: String
+    name: Option<String>,
+    last_name: Option<String>,
+    phone_number: Option<String>,
+    email_address: Option<String>,
+    description: Option<String>
 }
 
 pub struct Place {
     id: Uuid,
-    display_name: String,
-    geo_coords: String,
-    description: String,
+    display_name: Option<String>,
+    geo_coords: Option<String>,
+    description: Option<String>,
 }
 
 pub struct Note {
     id: Uuid,
-    title: String,
-    content: String,
+    title: Option<String>,
+    content: Option<String>,
     edited: DateTime<Utc>
 }
 
