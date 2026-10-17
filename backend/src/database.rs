@@ -38,8 +38,8 @@ const SQL_START_QUERY: &str = r#"
 "#;
 
 
-pub async fn connect_to_db() -> Result<Pool<Sqlite>, Box<dyn std::error::Error>> {
-    let connection_options = SqliteConnectOptions::from_str("sqlite://baza.db")?
+pub async fn connect_to_db(path: &str) -> Result<Pool<Sqlite>, Box<dyn std::error::Error>> {
+    let connection_options = SqliteConnectOptions::from_str(path)?
         .create_if_missing(true);
 
     let pool: Pool<Sqlite> = SqlitePoolOptions::new()
@@ -73,6 +73,10 @@ pub async fn insert_person(pool: &Pool<Sqlite>, person: &Person) -> Result<(), s
     Ok(())
 }
 pub async fn get_person(pool: &Pool<Sqlite>, id: &str) -> Result<Person, sqlx::Error> { 
+    let person_uuid = uuid::Uuid::parse_str(id)
+        .map_err(|e| sqlx::Error::Protocol(e.to_string()))?;
+
+    
     let person = sqlx::query_as!(
         Person,
         r#"
@@ -86,10 +90,33 @@ pub async fn get_person(pool: &Pool<Sqlite>, id: &str) -> Result<Person, sqlx::E
         FROM people 
         WHERE id = ?
         "#,
-        id
+        person_uuid
     )
     .fetch_one(pool)
     .await?;
 
     Ok(person)
  }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[tokio::test]
+    async fn person_crud() -> Result<(), Box<dyn std::error::Error>> {
+        let db = connect_to_db("sqlite::memory:").await?;
+        let person1 = Person::new(
+            Some("Adam".into()), 
+            None, 
+            None,
+            None,
+            None
+        );
+        let uuid = person1.id.to_string();
+        insert_person(&db, &person1).await?;
+
+        let person2= get_person(&db, &uuid).await?;
+        assert_eq!(person1.name, person2.name);
+
+        Ok(())
+    }
+}
