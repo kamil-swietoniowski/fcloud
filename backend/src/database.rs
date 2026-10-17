@@ -1,9 +1,10 @@
 use sqlx::sqlite::{SqliteConnectOptions, SqlitePoolOptions};
 use sqlx::{Pool, Sqlite};
 use std::str::FromStr;
+use uuid::Uuid;
 
 const SQL_START_QUERY: &str = r#"
-    CREATE TABLE IF NOT EXISTS People (
+    CREATE TABLE IF NOT EXISTS people (
         id TEXT PRIMARY KEY NOT NULL,
         name TEXT,
         last_name TEXT,
@@ -12,14 +13,14 @@ const SQL_START_QUERY: &str = r#"
         description TEXT
     );
     
-    CREATE TABLE IF NOT EXISTS Places (
+    CREATE TABLE IF NOT EXISTS places (
         id TEXT PRIMARY KEY NOT NULL,
         display_name TEXT,
         geo_coords TEXT,
         description TEXT
     );
 
-    CREATE TABLE IF NOT EXISTS Notes (
+    CREATE TABLE IF NOT EXISTS notes (
         id TEXT PRIMARY KEY NOT NULL,
         name TEXT,
         title TEXT NOT NULL,
@@ -27,7 +28,7 @@ const SQL_START_QUERY: &str = r#"
         edited TEXT NOT NULL
     );
 
-    CREATE TABLE IF NOT EXISTS Relation (
+    CREATE TABLE IF NOT EXISTS relation (
         id TEXT PRIMARY KEY NOT NULL,
         id_1 TEXT NOT NULL,
         id_2 TEXT NOT NULL,
@@ -66,9 +67,29 @@ pub async fn insert_person(pool: &Pool<Sqlite>, person: &Person) -> Result<(), s
 
 
     )
+    .execute(pool)
+    .await?;
+
     Ok(())
 }
 pub async fn get_person(pool: &Pool<Sqlite>, id: &str) -> Result<Person, sqlx::Error> { 
-    let person = Person::new(None, None, None, None, None);
+    let person = sqlx::query_as!(
+        Person,
+        r#"
+        SELECT 
+            id as "id: uuid::Uuid", 
+            name as "name?", 
+            last_name as "last_name?", 
+            phone_number as "phone_number?", 
+            email_address as "email_address?", 
+            description as "description?"
+        FROM people 
+        WHERE id = ?
+        "#,
+        id
+    )
+    .fetch_one(pool)
+    .await?;
+
     Ok(person)
  }
