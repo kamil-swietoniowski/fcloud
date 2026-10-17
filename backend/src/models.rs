@@ -2,16 +2,18 @@
 
 use uuid::Uuid;
 use chrono::{DateTime, Utc};
+use serde::{Serialize, Deserialize};
 
 
-
+#[derive(Serialize, Deserialize, sqlx::Type, Debug, Clone, PartialEq)]
+#[sqlx(type_name = "TEXT")]
 enum Table {
     Person,
     Place,
     Note, 
 }
 
-
+#[derive(sqlx::FromRow, Debug)]
 pub struct Person {
     id: Uuid,
     name: Option<String>,
@@ -21,6 +23,7 @@ pub struct Person {
     description: Option<String>
 }
 
+#[derive(sqlx::FromRow, Debug)]
 pub struct Place {
     id: Uuid,
     display_name: Option<String>,
@@ -28,6 +31,7 @@ pub struct Place {
     description: Option<String>,
 }
 
+#[derive(sqlx::FromRow, Debug)]
 pub struct Note {
     id: Uuid,
     title: Option<String>,
@@ -35,6 +39,7 @@ pub struct Note {
     edited: DateTime<Utc>
 }
 
+#[derive(sqlx::FromRow, Debug)]
 pub struct Relation {
     id: Uuid,
     id_1: Uuid,
