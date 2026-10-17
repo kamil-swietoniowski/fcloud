@@ -1,5 +1,8 @@
-use uuid::{uuid, Uuid};
+#![allow(dead_code)]
+
+use uuid::Uuid;
 use chrono::{DateTime, Utc};
+
 
 
 enum Table {
