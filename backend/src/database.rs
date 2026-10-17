@@ -51,3 +51,24 @@ pub async fn connect_to_db() -> Result<Pool<Sqlite>, Box<dyn std::error::Error>>
         .await?;
     Ok(pool)
 }
+
+use crate::models::Person;
+pub async fn insert_person(pool: &Pool<Sqlite>, person: &Person) -> Result<(), sqlx::Error> { 
+    sqlx::query!(
+        "INSERT INTO people (id, name, last_name, phone_number, email_address, description)
+        VALUES (?, ?, ?, ?, ?, ?)",
+        person.id,
+        person.name,
+        person.last_name,
+        person.phone_number,
+        person.email_address,
+        person.description
+
+
+    )
+    Ok(())
+}
+pub async fn get_person(pool: &Pool<Sqlite>, id: &str) -> Result<Person, sqlx::Error> { 
+    let person = Person::new(None, None, None, None, None);
+    Ok(person)
+ }
