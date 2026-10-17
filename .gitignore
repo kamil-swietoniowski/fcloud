@@ -4,5 +4,6 @@ backend/target/
 #workspace
 target/
 
-
+*.env
+*.json
 *.db
