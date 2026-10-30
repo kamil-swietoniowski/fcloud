@@ -58,19 +58,26 @@ erDiagram
         string content
         date edited
     }
-    Relation {
+    Note_Places {
         string id pk
-        string id_1 fk
-        string id_2 fk
-        string id_1_table
-        string id_2_table
+        string id_notes fk
+        string id_places fk
     }
 
-    Person ||--o{ Relation: Relates
-    Place ||--o{ Relation: Relates
-    Note ||--o{ Relation: Relates
+   %% Person ||--o{ Relation: Relates
+    Place ||--o{ Note_Places: Relates
+    Note ||--o{ Note_Places: Relates
 
 ```
+
+CREATE TABLE IF NOT EXISTS notes_places (
+        id TEXT PRIMARY KEY NOT NULL,
+        id_notes TEXT NOT NULL,
+        id_places TEXT NOT NULL,
+        FOREIGN KEY (id_notes) REFERENCES notes(id) ON DELETE CASCADE,
+        FOREIGN KEY (id_places) REFERENCES places(id) ON DELETE CASCADE
+    );
+
 
 ## How to run
 Not yet
