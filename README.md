@@ -58,13 +58,26 @@ erDiagram
         string content
         date edited
     }
+    People_Notes {
+        string id pk
+        string id_people fk
+        string id_notes fk
+    }
+    People_Places {
+        string id pk
+        string id_notes fk
+        string id_places fk
+    }
     Note_Places {
         string id pk
         string id_notes fk
         string id_places fk
     }
 
-   %% Person ||--o{ Relation: Relates
+    Person ||--o{ People_Notes: Relates
+    Note ||--o{ People_Notes: Relates
+    Person ||--o{ People_Places: Relates
+    Place ||--o{ People_Places: Relates
     Place ||--o{ Note_Places: Relates
     Note ||--o{ Note_Places: Relates
 
