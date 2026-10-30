@@ -22,18 +22,17 @@ const SQL_START_QUERY: &str = r#"
 
     CREATE TABLE IF NOT EXISTS notes (
         id TEXT PRIMARY KEY NOT NULL,
-        name TEXT,
         title TEXT NOT NULL,
         content TEXT,
         edited TEXT NOT NULL
     );
 
-    CREATE TABLE IF NOT EXISTS relation (
+    CREATE TABLE IF NOT EXISTS notes_places (
         id TEXT PRIMARY KEY NOT NULL,
-        id_1 TEXT NOT NULL,
-        id_2 TEXT NOT NULL,
-        id_1_table TEXT NOT NULL,
-        id_2_table TEXT NOT NULL
+        id_notes TEXT NOT NULL,
+        id_places TEXT NOT NULL,
+        FOREIGN KEY (id_notes) REFERENCES notes(id) ON DELETE CASCADE,
+        FOREIGN KEY (id_places) REFERENCES places(id) ON DELETE CASCADE
     );
 "#;
 
