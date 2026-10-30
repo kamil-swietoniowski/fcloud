@@ -65,7 +65,7 @@ erDiagram
     }
     People_Places {
         string id pk
-        string id_notes fk
+        string id_people fk
         string id_places fk
     }
     Note_Places {
