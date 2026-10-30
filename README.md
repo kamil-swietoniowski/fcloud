@@ -70,14 +70,6 @@ erDiagram
 
 ```
 
-CREATE TABLE IF NOT EXISTS notes_places (
-        id TEXT PRIMARY KEY NOT NULL,
-        id_notes TEXT NOT NULL,
-        id_places TEXT NOT NULL,
-        FOREIGN KEY (id_notes) REFERENCES notes(id) ON DELETE CASCADE,
-        FOREIGN KEY (id_places) REFERENCES places(id) ON DELETE CASCADE
-    );
-
 
 ## How to run
 Not yet
