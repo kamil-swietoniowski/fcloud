@@ -1,0 +1,86 @@
+{
+  "db_name": "SQLite",
+  "query": "\n        SELECT \n            id as \"id: uuid::Uuid\", \n            name as \"name?\", \n            last_name as \"last_name?\", \n            phone_number as \"phone_number?\", \n            email_address as \"email_address?\", \n            description as \"description?\"\n        FROM people \n        WHERE id = ?\n        ",
+  "describe": {
+    "columns": [
+      {
+        "name": "id: uuid::Uuid",
+        "ordinal": 0,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "people",
+            "name": "id"
+          }
+        }
+      },
+      {
+        "name": "name?",
+        "ordinal": 1,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "people",
+            "name": "name"
+          }
+        }
+      },
+      {
+        "name": "last_name?",
+        "ordinal": 2,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "people",
+            "name": "last_name"
+          }
+        }
+      },
+      {
+        "name": "phone_number?",
+        "ordinal": 3,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "people",
+            "name": "phone_number"
+          }
+        }
+      },
+      {
+        "name": "email_address?",
+        "ordinal": 4,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "people",
+            "name": "email_address"
+          }
+        }
+      },
+      {
+        "name": "description?",
+        "ordinal": 5,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "people",
+            "name": "description"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      true,
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  "hash": "cc6c24c2b7a79c3c1503beb1490ced2a4c23832a545defb976ccd04f0267d42d"
+}
