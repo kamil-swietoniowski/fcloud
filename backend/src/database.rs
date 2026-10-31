@@ -27,6 +27,22 @@ const SQL_START_QUERY: &str = r#"
         edited TEXT NOT NULL
     );
 
+    CREATE TABLE IF NOT EXISTS people_notes (
+        id TEXT PRIMARY KEY NOT NULL,
+        id_people TEXT NOT NULL,
+        id_notes TEXT NOT NULL,
+        FOREIGN KEY (id_people) REFERENCES people(id) ON DELETE CASCADE,
+        FOREIGN KEY (id_notes) REFERENCES notes(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS people_places (
+        id TEXT PRIMARY KEY NOT NULL,
+        id_people TEXT NOT NULL,
+        id_places TEXT NOT NULL,
+        FOREIGN KEY (id_people) REFERENCES people(id) ON DELETE CASCADE,
+        FOREIGN KEY (id_places) REFERENCES places(id) ON DELETE CASCADE
+    );
+
     CREATE TABLE IF NOT EXISTS notes_places (
         id TEXT PRIMARY KEY NOT NULL,
         id_notes TEXT NOT NULL,
