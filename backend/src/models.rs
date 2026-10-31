@@ -1,17 +1,10 @@
 #![allow(dead_code)]
 
+use std::os::unix::net::UnixListener;
+
 use uuid::Uuid;
 use chrono::{DateTime, Utc};
 use serde::{Serialize, Deserialize};
-
-
-#[derive(Serialize, Deserialize, sqlx::Type, Debug, Clone, PartialEq)]
-#[sqlx(type_name = "TEXT")]
-enum Table {
-    Person,
-    Place,
-    Note, 
-}
 
 #[derive(sqlx::FromRow, Debug)]
 pub struct Person {
@@ -39,21 +32,43 @@ pub struct Note {
     pub edited: DateTime<Utc>
 }
 
-#[derive(sqlx::FromRow, Debug)]
-pub struct Relation {
-    pub id: Uuid,
-    pub id_1: Uuid,
-    pub id_2: Uuid,
-    pub id_1_table: Table,
-    pub id_2_table: Table
-}
 
 impl Person {
-    pub fn new(name: Option<String>, last_name: Option<String>, phone_number: Option<String>, email_address: Option<String>, description: Option<String>) -> Self {
+    pub fn new(id: Option<Uuid>, name: Option<String>, last_name: Option<String>, phone_number: Option<String>, email_address: Option<String>, description: Option<String>) -> Self {
         let uuid = Uuid::now_v7();
 
         Self {
             id: uuid, name, last_name, phone_number, email_address, description
+        }
+    }
+}
+
+impl Place {
+    pub fn new(id: Option<Uuid>, display_name: Option<String>, geo_coords: Option<String>, description: Option<String>) -> Self {
+        let uuid = Uuid::now_v7();
+
+        Self {
+            id: uuid, display_name, geo_coords, description
+        }
+    }
+}
+
+impl Note {
+    pub fn new(id: Option<Uuid>, title: Option<String>, content: Option<String>, edited: Option<DateTime<Utc>>) -> Self {
+        let id = if id.is_none() {
+            Uuid::now_v7()
+        } else {
+            id.unwrap()
+        };
+
+        let edited = if edited.is_none() {
+            Utc::now()
+        } else {
+            edited.unwrap()
+        };
+
+        Self {
+            id, title, content, edited
         }
     }
 }
