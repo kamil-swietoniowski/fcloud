@@ -1,0 +1,33 @@
+[project]
+name = "fcloud"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Kamil Świętoniowski", email = "kamilswietoniowski91@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "fastapi[standard]>=0.163.1",
+    "fcloud-core",
+]
+
+[project.scripts]
+fcloud = "fcloud:main"
+
+[build-system]
+requires = ["uv_build>=0.13.7,<0.14.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "maturin>=1.16.0",
+]
+
+[tool.uv.workspace]
+members = [
+    "fcloud_core",
+]
+
+[tool.uv.sources]
+fcloud-core = { workspace = true, editable = true }
