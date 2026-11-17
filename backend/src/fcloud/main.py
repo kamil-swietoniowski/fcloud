@@ -2,10 +2,11 @@ from fastapi import FastAPI
 import fcloud_core 
 import uvicorn
 from fcloud.routers import person
+from fcloud.database import engine
 
 app = FastAPI(title="Fcloud API")
 
-app.include_router(person.router)
+app.include_router(person.router, prefix="/api")
 
 
 @app.get("/")
