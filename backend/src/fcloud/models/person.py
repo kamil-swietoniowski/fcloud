@@ -11,3 +11,6 @@ class Person(SQLModel, table=True):
     phone_number: str | None= Field(default=None, index=True)
     email_address: str | None = Field(default=None, index=True)
     description: str | None = Field(default=None)
+
+    
+

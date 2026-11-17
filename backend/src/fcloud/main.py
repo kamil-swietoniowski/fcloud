@@ -1,7 +1,10 @@
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI, HTTPException
+from sqlmodel import Field, Session, SQLModel, select
 import fcloud_core 
 import uvicorn
+from fcloud.database import get_session, engine
 
+SQLModel.metadata.create_all(engine)
 
 app = FastAPI(title="Fcloud API")
 
