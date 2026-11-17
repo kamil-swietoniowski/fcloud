@@ -1,8 +1,10 @@
 from fastapi import FastAPI
-import fcloud_core
+import fcloud_core 
 import uvicorn
 
+
 app = FastAPI(title="Fcloud API")
+
 
 @app.get("/")
 def health_check():
