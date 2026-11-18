@@ -4,9 +4,12 @@ import fcloud_core
 import uvicorn
 from fcloud.database import get_session, engine
 
-SQLModel.metadata.create_all(engine)
+from fcloud.routers import person
+from fcloud.database import engine
 
 app = FastAPI(title="Fcloud API")
+
+app.include_router(person.router, prefix="/api")
 
 
 @app.get("/")
